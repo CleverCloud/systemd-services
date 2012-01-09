@@ -1,0 +1,18 @@
+================================================================================
+Services files for systemd.
+================================================================================
+
+Description
+================================================================================
+
+Those files can't be found in specific packages, nor in systemd-units.
+
+Specific files informations
+================================================================================
+
+gen-host-keys
+--------------------------------------------------------------------------------
+
+This file shall generate rsa/dsa files when the latter have not been found.
+You should use this script in `ExecStartPre` phase of sshd service, or in a
+sshkeygen.service file that's `Before=sshd.service`
