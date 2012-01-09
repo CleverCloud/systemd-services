@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Some functions to make the below more readable
+KEYGEN=/usr/bin/ssh-keygen
+RSA1_KEY=/etc/ssh/ssh_host_key
+RSA_KEY=/etc/ssh/ssh_host_rsa_key
+DSA_KEY=/etc/ssh/ssh_host_dsa_key
+RO=false
+
+# Ensure that / is writable
+(mount | grep " / " | grep -w "ro" > /dev/null 2>&1) && mount -o remount,rw / && RO=true
+
+# do rsa1 key
+if [ ! -s $RSA1_KEY ]; then
+	rm -f $RSA1_KEY
+	if $KEYGEN -q -t rsa1 -f $RSA1_KEY -C '' -N '' >&/dev/null; then
+		chmod 600 $RSA1_KEY
+		chmod 644 $RSA1_KEY.pub
+	else
+		echo "RSA1 key generation failed"
+		exit 1
+	fi
+fi
+
+# do rsa2 key
+if [ ! -s $RSA_KEY ]; then
+	rm -f $RSA_KEY
+	if $KEYGEN -q -t rsa -b 4096 -f $RSA_KEY -C '' -N '' >&/dev/null; then
+		chmod 600 $RSA_KEY
+		chmod 644 $RSA_KEY.pub
+	else
+		echo "RSA2 key generation failed"
+		exit 1
+	fi
+fi
+
+# do dsa key
+if [ ! -s $DSA_KEY ]; then
+	rm -f $DSA_KEY
+	if $KEYGEN -q -t dsa -f $DSA_KEY -C '' -N '' >&/dev/null; then
+		chmod 600 $DSA_KEY
+		chmod 644 $DSA_KEY.pub
+	else
+		echo "DSA key generation failed"
+		exit 1
+	fi
+fi
+
+# / RO
+$RO && mount -o remount,ro /
+
+exit 0

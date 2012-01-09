@@ -1,0 +1,13 @@
+[Unit]
+Requires=couchdb.service rabbitmq-server.service chef-solr.service
+After=network.target couchdb.service rabbitmq-server.service chef-solr.service
+Description=Chef server api daemon
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/chef-server -u chef -G chef --name chef-server -P /var/run/chef/server.pid -e production -c 1 -C /etc/chef/server.rb
+PIDFile=/var/run/chef/server.pid
+ExecStop=/usr/local/bin/chef-server -K all -P /var/run/chef/server.pid
+
+[Install]
+Alias=multi-user.target.wants/chef-server-api.service

@@ -1,0 +1,9 @@
+[Unit]
+Requires=couchdb.service
+After=network.target couchdb.service
+Description=Chef expander service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/chef-expander -n1
+

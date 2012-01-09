@@ -1,0 +1,11 @@
+[Unit]
+Description=Set the network up
+Requires=net-eth0.device
+
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sbin/networking %I
+
+[Install]
+WantedBy=network.target multi-user.target

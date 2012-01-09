@@ -1,0 +1,11 @@
+[Unit]
+Requires=chef-server-api.service
+After=chef-server-api.service
+Description=Chef server webui
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/chef-server-webui -p 4040 -e production
+
+[Install]
+Alias=multi-user.target.wants/chef-server-webui.service

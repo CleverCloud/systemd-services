@@ -1,0 +1,11 @@
+[Unit]
+Description=SSH host keys generation
+Before=sshd.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sbin/gen-host-keys
+
+[Install]
+WantedBy=multi-user.target
+

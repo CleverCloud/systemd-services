@@ -1,0 +1,8 @@
+[Unit]
+Requires=couchdb.service chef-expander.service
+After=network.target couchdb.service chef-expander.service
+Description=Chef server api daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/chef-solr
